@@ -246,10 +246,11 @@ export function LayersSelector() {
       </div>
 
       <Image
-        src="/assets/home-v9/layers-agent-stack.webp"
+        src="/assets/architecture-animation.gif"
         alt="An exploded architecture showing output, agent, environment, and runtime layers."
-        width={572}
+        width={800}
         height={450}
+        unoptimized
         className={styles.layersArchitecture}
         sizes="(max-width: 699px) calc(100vw - 40px), 40vw"
       />

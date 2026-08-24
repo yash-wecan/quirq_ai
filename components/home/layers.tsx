@@ -168,10 +168,11 @@ export function Layers() {
           className="mx-auto w-full max-w-[440px] overflow-hidden rounded-2xl border border-hair bg-[#14110c] lg:mx-0 lg:max-w-[480px]"
         >
           <Image
-            src="/assets/home-v9/layers-agent-stack.webp"
+            src="/assets/architecture-animation.gif"
             alt="An exploded architecture showing output, agent, environment, and runtime layers."
-            width={572}
+            width={800}
             height={450}
+            unoptimized
             sizes="(max-width: 1024px) min(100vw - 40px, 440px), 34vw"
             className="h-auto w-full"
           />
