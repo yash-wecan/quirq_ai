@@ -10,6 +10,7 @@ import {
   RuntimeLattice,
   ScalingArcs,
 } from "@/components/home/feature-visuals";
+import { SpaceCanvas } from "@/components/home/space-canvas";
 import { Mark, Reveal } from "@/components/ui/primitives";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -136,21 +137,8 @@ function CardVisual({ id }: { id: CardId }) {
     // `lg`, where the wide card fills the whole container.
     case "cost":
       return (
-        <div className="absolute inset-x-0 top-[40%] bottom-0 left-5 ml-auto max-w-[803px] sm:left-8">
-          <ScreenFrame className="h-full rounded-b-none border-b-0">
-            <Image
-              src="/assets/home-v9/cost-card-art.png"
-              alt="Quirq session clusters grouped by agent: Claude Code, Cursor and Codex."
-              fill
-              sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1024px) calc(100vw - 64px), 50vw"
-              // Not `object-top`. The capture opens on ~35% of empty screen
-              // above the first cluster, and once the cards came down to a
-              // 384x408 aspect this window got short enough that top-aligning
-              // showed the empty part and cropped the labelled clusters away.
-              // 30% keeps a sliver of the bezel and lands the clusters in view.
-              className="object-cover object-[center_30%]"
-            />
-          </ScreenFrame>
+        <div className="relative flex-1 min-h-[260px] w-full overflow-hidden">
+          <SpaceCanvas />
         </div>
       );
 

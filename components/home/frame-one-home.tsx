@@ -15,6 +15,7 @@ import {
 } from "./frame-one-home-interactions";
 import { CopyCommand } from "./copy-command";
 import { FeatureSvg } from "./feature-svg";
+import { SpaceCanvas } from "./space-canvas";
 import styles from "./frame-one-home-responsive.module.css";
 
 const ASSET_ROOT = "/assets/home-v9";
@@ -292,21 +293,16 @@ function Features() {
           />
         </article>
 
-        <article className={`${styles.featureCard} ${styles.costCard} ${styles.exportedCard}`}>
-          <Image
-            src={`${ASSET_ROOT}/cost-card-art.png`}
-            alt=""
-            fill
-            sizes="(max-width: 699px) calc(100vw - 32px), 56vw"
-            className={styles.cardArt}
-            unoptimized
-          />
+        <article className={`${styles.featureCard} ${styles.costCard}`}>
           <div className={styles.cardCopy}>
             <h3>Unified Cost Observability</h3>
             <p>
               Each environment comes with our Quirq analytics software that detail the costs,
               time spent, and tasks of your agents in real-time.
             </p>
+          </div>
+          <div className={styles.costCanvasWrapper}>
+            <SpaceCanvas />
           </div>
         </article>
 

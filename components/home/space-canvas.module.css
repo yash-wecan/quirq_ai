@@ -1,0 +1,353 @@
+.stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  color: #e9e4d9;
+  font-family: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  border-radius: inherit;
+  user-select: none;
+}
+
+.view {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.gcanvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ov {
+  position: absolute;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.ov > * {
+  pointer-events: auto;
+}
+
+.crumb {
+  top: 14px;
+  right: 18px;
+  display: none;
+  align-items: center;
+  gap: 12px;
+  background: rgba(16, 19, 24, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid #242832;
+  border-radius: 999px;
+  padding: 6px 7px 6px 13px;
+}
+
+.crumbIsOn {
+  display: flex;
+}
+
+.crumbName {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  font-size: 13.5px;
+  font-weight: 400;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e9e4d9;
+}
+
+.crumbDepth {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 9.5px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: #888276;
+  white-space: nowrap;
+}
+
+.crumbClear {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 9.5px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #b3ada0;
+  border: 1px solid #242832;
+  border-radius: 999px;
+  padding: 3px 9px;
+  background: none;
+  cursor: pointer;
+  transition: all 0.16s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.crumbClear:hover {
+  color: #e9e4d9;
+  border-color: #39404d;
+}
+
+.hc {
+  position: absolute;
+  z-index: 80;
+  width: 262px;
+  pointer-events: none;
+  display: none;
+  background: rgba(13, 16, 20, 0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid #242832;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.66);
+}
+
+.hcIsOn {
+  display: block;
+}
+
+.hcArt {
+  padding: 15px 16px 12px;
+}
+
+.hcKicker {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 8.5px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #b3ada0;
+}
+
+.hcTitle {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  font-size: 17px;
+  line-height: 1.22;
+  font-weight: 500;
+  margin-top: 5px;
+  color: #e9e4d9;
+  text-wrap: balance;
+}
+
+.hcSub {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: #b3ada0;
+  margin-top: 4px;
+}
+
+.hcDl {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 7px 10px;
+  padding: 11px 16px;
+  margin: 0;
+}
+
+.hcDt {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 8.5px;
+  line-height: 1.6;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #56534b;
+}
+
+.hcDd {
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: #b3ada0;
+  margin: 0;
+}
+
+.hcDdMono {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 10px;
+  line-height: 1.6;
+  word-break: break-all;
+  color: #b3ada0;
+  margin: 0;
+}
+
+.hcFoot {
+  border-top: 1px solid #1b1f27;
+  padding: 7px 16px;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #56534b;
+}
+
+.panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 352px;
+  max-width: 100%;
+  z-index: 50;
+  background: rgba(13, 16, 20, 0.96);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-left: 1px solid #242832;
+  transform: translateX(102%);
+  transition: transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.panelIsOpen {
+  transform: translateX(0);
+}
+
+.panelClose {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid #242832;
+  color: #b3ada0;
+  font-size: 13px;
+  line-height: 1;
+  z-index: 2;
+  background: #101318;
+  cursor: pointer;
+  transition: all 0.16s cubic-bezier(0.22, 0.61, 0.36, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.panelClose:hover {
+  color: #e9e4d9;
+  background: #161a20;
+}
+
+.panelScroll {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.poster {
+  padding: 30px 22px 20px;
+}
+
+.posterKicker {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 9.5px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #b3ada0;
+}
+
+.posterTitle {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  font-size: 25px;
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  margin: 8px 0 6px;
+  text-wrap: balance;
+  color: #e9e4d9;
+}
+
+.posterSub {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  font-style: italic;
+  font-size: 13px;
+  font-weight: 400;
+  color: #b3ada0;
+}
+
+.posterPath {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 10px;
+  font-weight: 400;
+  color: #888276;
+  margin-top: 9px;
+  word-break: break-all;
+}
+
+.psec {
+  padding: 18px 22px 4px;
+}
+
+.psecH4 {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 9.5px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #888276;
+  margin-bottom: 9px;
+}
+
+.psecP {
+  font-size: 13px;
+  line-height: 1.62;
+  color: #b3ada0;
+}
+
+.conn {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  width: 100%;
+  text-align: left;
+  padding: 7px 6px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  color: #e9e4d9;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.16s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.conn:hover {
+  background: #161a20;
+}
+
+.connCdot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex: none;
+  align-self: center;
+}
+
+.connRel {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  font-style: italic;
+  font-size: 11.5px;
+  font-weight: 400;
+  color: #888276;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.connYr {
+  margin-left: auto;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 10px;
+  font-weight: 400;
+  color: #888276;
+  white-space: nowrap;
+}
