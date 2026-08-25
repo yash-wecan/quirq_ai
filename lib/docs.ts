@@ -49,7 +49,7 @@ export const SECTIONS: DocSection[] = [
       {
         title: "Deploy an environment",
         blurb:
-          "The two ways to run it: managed on our cloud, or licensed onto infrastructure you already own.",
+          "The two ways to run it: XO Cloud (Managed), or licensed onto infrastructure you already own.",
         href: "/products",
       },
       {

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ProductsPage } from "@/components/products/products-page";
 
 const DESCRIPTION =
-  "Deploy an agentic workforce environment two ways: managed on our cloud and self-serve, or licensed onto infrastructure you already own and stood up by our engineers. Any harness, any model, any cloud.";
+  "Deploy an agentic workforce environment two ways: XO Cloud (Managed) and self-serve, or licensed onto infrastructure you already own and stood up by our engineers. Any harness, any model, any cloud.";
 
 export const metadata: Metadata = {
   title: "Products",

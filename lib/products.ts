@@ -40,7 +40,7 @@ export const MODES: Mode[] = [
   {
     id: "managed",
     number: "01",
-    name: "Managed cloud",
+    name: "XO Cloud (Managed)",
     note: "We host and run it. Sign up and start. No licence, no call.",
     standing: "Hosted by us · self-serve",
     accent: "green",
@@ -257,7 +257,7 @@ export type Plan = {
 export const PLANS: Plan[] = [
   {
     name: "Pro",
-    standing: "Managed cloud",
+    standing: "XO Cloud (Managed)",
     price: "$20",
     cadence: "/mo",
     features: [
@@ -272,7 +272,7 @@ export const PLANS: Plan[] = [
   },
   {
     name: "Max",
-    standing: "Managed cloud",
+    standing: "XO Cloud (Managed)",
     price: "$100",
     cadence: "/mo",
     features: [

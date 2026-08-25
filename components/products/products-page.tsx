@@ -163,7 +163,7 @@ function Hero() {
 function Managed() {
   return (
     <Section id="managed" labelledBy="managed-title" glow="cool">
-      <Marker>01 · Managed cloud</Marker>
+      <Marker>01 · XO Cloud (Managed)</Marker>
 
       <div className={styles.split}>
         <div>
@@ -465,7 +465,7 @@ function Compare() {
       <div className={styles.tableWrap}>
         <table className={styles.table}>
           <caption className="sr-only">
-            Managed cloud and bring your own cloud, compared.
+            XO Cloud (Managed) and bring your own cloud, compared.
           </caption>
           <thead>
             <tr>
@@ -508,7 +508,7 @@ function Pricing() {
       </h2>
 
       <p className={styles.lede}>
-        Managed cloud is self-serve: pick a tier and start. Bringing your own
+        XO Cloud (Managed) is self-serve: pick a tier and start. Bringing your own
         cloud is quoted, because what it costs depends on where it has to run
         and how much of it we build with you.
       </p>
@@ -588,8 +588,8 @@ function Contact() {
         <p className={styles.lede}>
           Ask for the deployment guide and a walkthrough of the unit-of-work
           ledger with your own numbers. We reply within one business day. If you
-          are a smaller team, you do not need us at all: start on the managed
-          cloud and skip the conversation.
+          are a smaller team, you do not need us at all: start on XO Cloud
+          (Managed) and skip the conversation.
         </p>
 
         {/* Real destinations rather than a form: there is no endpoint behind
@@ -619,7 +619,7 @@ function Contact() {
 
         <div className={styles.actions}>
           <AppLink className={`${styles.button} ${styles.primary}`}>
-            Start on managed cloud
+            Start on XO Cloud (Managed)
           </AppLink>
           <Link
             href="/machinespeed"

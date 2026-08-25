@@ -16,7 +16,7 @@ at /whitepaper carries the full construction in prose.
 ## Pages
 
 - [Products](https://quirq.ai/products): Deploy an agentic workforce
-  environment two ways. Managed cloud is self-serve and priced per environment;
+  environment two ways. XO Cloud (Managed) is self-serve and priced per environment;
   bring your own cloud is licensed onto infrastructure you already own and
   stood up by forward-deployed engineers. Covers the harnesses you can deploy,
   the observability layer, the comparison between the two, and pricing.
