@@ -1,366 +1,388 @@
 import type { Metadata, Viewport } from "next";
+import Link from "next/link";
 import { SiteFooter } from "@/components/ui/footer";
-import { Calculator } from "./calculator";
+import { Cases } from "./cases";
+import { COMPLIANCE, AGENDA, CASES, FAQ, FOUNDATION, MODELS, PEOPLE, SECTIONS, TIMELINE } from "./content";
+import { ControlRoom } from "./control-room";
+import { HeroWord } from "./hero-word";
+import { BEFORE } from "./diagrams";
+import { Intake } from "./intake";
+import { ModeSwitch } from "./mode-switch";
+import { SectionLinks } from "./section-nav";
 import styles from "./machinespeed.module.css";
 
 /**
- * MACHINE SPEED, ported from quirq-package/site/machinespeed.html.
+ * MachineSpeed v2, ported from machinespeed-int/website/machinespeed-site.html.
  *
  * A sub-brand ("built on quirq technology") reached from the Enterprise link in
- * the site nav, opened in a new tab. It keeps the palette and layout it was
- * authored with, but wears quirq's chrome: the site nav above, SiteFooter
- * below, and the authored footer reduced to the attribution line it carried.
+ * the site nav, opened in a new tab. It keeps the brandkit it was authored
+ * with, but wears quirq's chrome: the site nav above, SiteFooter below.
  *
- * Server-rendered apart from the calculator, which is the page's only
- * interactive element and its only client boundary.
+ * Server-rendered apart from six narrow client islands: the hero's changing
+ * word, the reader-mode switch, the control room, the use-case tabs, the
+ * intake form and the section-link highlighter.
+ * Copy lives in content.ts; the before-state diagrams in diagrams.tsx.
  */
 
 export const metadata: Metadata = {
   // Absolute: this page is not a quirq page, so it does not take the root
   // layout's "· quirq" title template.
-  title: {
-    absolute: "MACHINE SPEED — We help businesses run at machine speed.",
-  },
+  title: { absolute: "MachineSpeed" },
   description:
-    "Agentic workflows that hand you back ten hours a week. Built and run on the stack you already own, with every workflow reporting the money it made or saved.",
+    "Don't duct-tape AI onto your business. MachineSpeed engineers put governed AI agents into production in 14 days, on the quirq runtime.",
 };
 
 export const viewport: Viewport = {
   themeColor: "#10120F",
 };
 
-/** The three skewed bars the sub-brand uses as its mark. */
-function Bars() {
+function Mark() {
   return (
-    <span className={styles.bars} aria-hidden>
-      <i />
-      <i />
-      <i />
-    </span>
+    <a className={styles.mark} href="#top" aria-label="MachineSpeed, back to top">
+      <span className={styles.bars} aria-hidden>
+        <i />
+        <i />
+        <i />
+      </span>
+      <b>MACHINESPEED</b>
+    </a>
   );
 }
 
-/** One card on the blueprint canvas. Positions are data, so they stay inline. */
-function Node({
-  left,
-  top,
-  width = 190,
-  kind,
-  dot,
-  title,
-  sub,
-  foot,
-  highlight = false,
-}: {
-  left: number;
-  top: number;
-  width?: number;
-  kind: string;
-  dot: string;
-  title: string;
-  sub: string;
-  foot: React.ReactNode;
-  highlight?: boolean;
-}) {
-  return (
-    <div
-      className={`${styles.node}${highlight ? ` ${styles.hl}` : ""}`}
-      style={{ left, top, width }}
-    >
-      <div className={styles.nHd}>
-        <span className={styles.nDot} style={{ background: dot }} />
-        {kind}
-      </div>
-      <div className={styles.nBd}>
-        <div className={styles.nT}>{title}</div>
-        <div className={styles.nS}>{sub}</div>
-      </div>
-      <div className={styles.nFt}>{foot}</div>
-    </div>
-  );
+function Arrow() {
+  return <span className={styles.arr} aria-hidden>→</span>;
 }
+
+const ICONS: Record<(typeof FOUNDATION)[number]["icon"], React.ReactNode> = {
+  scope: (
+    <div className={styles.icoScope}>
+      <i className={styles.on} /><i className={styles.on} /><i className={styles.no} /><i className={styles.on} />
+    </div>
+  ),
+  gate: (
+    <div className={styles.icoGate}>
+      <i /><b />
+    </div>
+  ),
+  log: (
+    <div className={styles.icoLog}>
+      <i /><i /><i /><i />
+    </div>
+  ),
+  swap: (
+    <div className={styles.icoSwap}>
+      <i /><i className={styles.b} /><i /><i />
+    </div>
+  ),
+};
 
 export default function MachineSpeed() {
   return (
-    <div className={styles.page}>
-      <div className={styles.heroSplit}>
-        <div className={styles.heroLeft}>
-          {/* The mark, not a link: in the source it pointed at a placeholder. */}
-          <span role="img" aria-label="MACHINE SPEED">
-            <Bars />
-          </span>
+    <div className={styles.page} id="top">
+      <header className={styles.subnav}>
+        <div className={styles.wrap}>
+          <Mark />
+          <SectionLinks />
+          <a className={`${styles.btn} ${styles.btnPrimary} ${styles.btnSm}`} href="#book">
+            Bring us a workflow
+          </a>
+        </div>
+      </header>
 
-          <div className={styles.heroMid}>
-            <div className={`${styles.stack} ${styles.stackUp}`} aria-hidden>
-              <div className={`${styles.o1} ${styles.it}`}>order recovery.</div>
-              <div className={styles.o2}>cfo intelligence.</div>
-              <div className={styles.o3}>sales machines.</div>
-            </div>
-
-            <h1>
-              We help businesses run at <em>machine speed.</em>
+      <main>
+        {/* ============ HERO ============ */}
+        <section className={styles.hero} aria-labelledby="hero-h">
+          <div className={styles.wrap}>
+            <h1 id="hero-h">
+              <span className="sr-only">Run your business at machinespeed.</span>
+              <span aria-hidden>
+                <span className={styles.w}>Run</span> <span className={styles.w}>your</span> <HeroWord />
+              </span>
+              <span className={styles.accent} aria-hidden>at machinespeed.</span>
             </h1>
 
-            <div className={`${styles.stack} ${styles.stackDown}`} aria-hidden>
-              <div className={`${styles.o3} ${styles.it}`}>
-                subscription audits.
+            <div className={styles.heroFoot}>
+              <div>
+                <p className={`${styles.sub} ${styles.forAny}`}>
+                  Most companies duct-tape AI onto the business. A prompt here, a Zap there, one person who knows how it
+                  all fits. It holds right up until it touches money or a customer.{" "}
+                  <strong>
+                    We do it the other way round: agents built into how your company already runs, guardrails on, the
+                    first one live in 14 days.
+                  </strong>
+                </p>
+                <p className={`${styles.sub} ${styles.forStuck}`}>
+                  You moved fast, and now you own the duct tape. Prompts, Zaps and scripts that break when someone
+                  renames a column, and nobody can say what they did last week.{" "}
+                  <strong>
+                    We move what works onto one runtime with scopes, approvals and a record of every run. The business
+                    doesn&rsquo;t stop while we do it.
+                  </strong>
+                </p>
+                <p className={`${styles.sub} ${styles.forScale}`}>
+                  AI already works in one team. Every other team wants it, and nobody owns the rules.{" "}
+                  <strong>
+                    We put your agents on one runtime so the second team starts where the first one finished, under
+                    controls your security lead signed off once.
+                  </strong>
+                </p>
+                <ModeSwitch />
               </div>
-              <div className={styles.o2}>agent loops.</div>
-              <div className={styles.o1}>background workflows.</div>
+              <div className={styles.actions}>
+                <a className={`${styles.btn} ${styles.btnPrimary}`} href="#book">
+                  Bring us a workflow <Arrow />
+                </a>
+                <a className={`${styles.btn} ${styles.btnGhost}`} href="#room">
+                  See it running ↓
+                </a>
+              </div>
+            </div>
+
+            <ControlRoom />
+          </div>
+        </section>
+
+        {/* ============ FOUNDATION ============ */}
+        <section className={styles.section} id="foundation" aria-labelledby="fnd-h">
+          <div className={`${styles.wrap} ${styles.fndLayout}`}>
+            <div className={`${styles.head} ${styles.reveal}`}>
+              <span className={styles.label}>The foundation</span>
+              <h2 id="fnd-h">Every agent you switch on is a new hire with a master key.</h2>
+              <p>
+                It can read your ledger, email your customers and move money. That makes it the most privileged hire
+                you&rsquo;ve ever made, and most teams onboard it in an afternoon. Before the first one goes live with
+                us, four things are already settled.
+              </p>
+              <p className={styles.hook}>
+                Ask on the call and we&rsquo;ll show you all four <a href="#book">on your own workflow</a>.
+              </p>
+            </div>
+            <div className={`${styles.found} ${styles.reveal}`}>
+              {FOUNDATION.map((f) => (
+                <div key={f.label} className={styles.fnd}>
+                  <div className={styles.ico} aria-hidden>{ICONS[f.icon]}</div>
+                  <span className={styles.k}>{f.label}</span>
+                  <h3>{f.title}</h3>
+                  <p>{f.body}</p>
+                </div>
+              ))}
             </div>
           </div>
+        </section>
 
-          <div className={styles.heroBottom}>
-            <div className={styles.lead}>
-              Agentic workflows that hand you back ten hours a week.
+        {/* ============ IN PRACTICE ============ */}
+        <section className={styles.section} id="cases" aria-labelledby="cases-h">
+          <div className={styles.wrap}>
+            <div className={`${styles.head} ${styles.split} ${styles.reveal}`}>
+              <h2 id="cases-h">The same workflow, both ways.</h2>
+              <p>
+                Duct-taped is what we usually find on day one. With MachineSpeed is what it runs on now. Toggle each one
+                and look for where the person sits.
+              </p>
             </div>
-            <p>
-              Your software already moves at machine speed, your operations
-              don&rsquo;t. We build and run agentic workflows on the stack you
-              already own, and every workflow reports the money it made or
-              saved. Not promised. Measured.
-            </p>
+            <Cases cases={CASES} before={BEFORE} />
           </div>
-        </div>
+        </section>
 
-        <div
-          className={styles.heroImg}
-          role="img"
-          aria-label="Light refraction on black"
-        />
-      </div>
+        {/* ============ ENGAGEMENT ============ */}
+        <section className={styles.section} id="engagement" aria-labelledby="eng-h">
+          <div className={styles.wrap}>
+            <div className={`${styles.head} ${styles.lede} ${styles.reveal}`}>
+              <p className={styles.big}>
+                No discovery phase. No strategy deck. <em>No retainer.</em>
+              </p>
+              <h2 id="eng-h">
+                Thirty minutes to a straight answer. Fourteen days to production. Then the next team, faster.
+              </h2>
+            </div>
+            <div className={`${styles.commit} ${styles.reveal}`} aria-label="What every engagement commits to">
+              <div><b>14 days</b><span>from the first call to a workflow live in production</span></div>
+              <div><b>Fixed price</b><span>every sprint, agreed before day one, with an end date</span></div>
+              <div><b>One number</b><span>per workflow, reported to you every month</span></div>
+            </div>
+            <ol className={`${styles.tl} ${styles.reveal}`}>
+              {TIMELINE.map((step) => (
+                <li key={step.title}>
+                  <span className={styles.when}>{step.when}</span>
+                  <h3>{step.title}</h3>
+                  <p>{step.body}</p>
+                  <div className={styles.get}>
+                    <b>You leave with</b>
+                    {step.get}
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <div className={`${styles.rule} ${styles.reveal}`}>
+              <p>
+                <b>Our scoping rule:</b> if we can&rsquo;t show you 2–3× the sprint&rsquo;s value on the call, we&rsquo;ll
+                say so and we won&rsquo;t propose one. You&rsquo;ll have lost half an hour.
+              </p>
+              <a className={`${styles.btn} ${styles.btnPrimary}`} href="#book">
+                Book the walkthrough <Arrow />
+              </a>
+            </div>
+          </div>
+        </section>
 
-      <div className={styles.col}>
-        <div className={styles.prose}>
-          <h2>What we do</h2>
-          <p>
-            We connect to the infrastructure, models and harnesses your team
-            already uses. No rip-and-replace. Then the hours come back, five
-            ways, every one of them measured:
-          </p>
-          <ol className={styles.plan}>
-            <li>
-              <b>Automate, or remove, your SaaS tools.</b> Agents take over the
-              work your subscriptions were bought for. What they replace, you
-              cancel. Cancelled spend is cash.
-            </li>
-            <li>
-              <b>Deploy bespoke blueprints that move your business.</b> Proven
-              workflows (sales machine, CFO intelligence, order recovery)
-              adapted to your operation and pointed at the metric that matters
-              this quarter.
-            </li>
-            <li>
-              <b>Drive efficiency into your AI spend.</b> Powered by quirq: cost
-              per useful unit of work, instrumented across every model and agent
-              you run.
-            </li>
-            <li>
-              <b>Enable product development with agentic tools.</b> Your team
-              ships faster with agentic harnesses wired into the development
-              loop.
-            </li>
-            <li>
-              <b>Open new customer acquisition channels with AI.</b> Custom
-              models, MCP integrations, skills, agents and loops that reach
-              customers your current funnel can&rsquo;t.
-            </li>
-          </ol>
-
-          <h2>The product</h2>
-          <p>
-            The work happens underneath. On the surface, all you see are{" "}
-            <strong>the decisions you need to make</strong>, each one sized in
-            dollars, approved or held from your phone.
-          </p>
-
-          <div className={styles.canvasWrap}>
-            <div className={styles.canvas}>
-              <div className={styles.cvBar}>
-                <span className={styles.cvTitle}>
-                  Blueprint: <b>order-recovery</b> · running
-                </span>
-                <span className={styles.cvRight}>
-                  <span className={styles.cvBrand}>quirq</span>
-                  <span className={styles.cvDeploy}>● DEPLOYED</span>
-                </span>
+        {/* ============ PEOPLE + INFRASTRUCTURE ============ */}
+        <section className={`${styles.section} ${styles.tint}`} aria-labelledby="two-h">
+          <div className={styles.wrap}>
+            <div className={`${styles.head} ${styles.split} ${styles.reveal}`}>
+              <h2 id="two-h">You don&rsquo;t buy software from us. You buy the outcome, and the people who own it.</h2>
+              <p>
+                MachineSpeed is a service. Our engineers sit inside your team and ship. Everything they ship runs where
+                your work already lives, in your own cloud or on-prem, under one set of rules, so your security review
+                happens once, not once per workflow.
+              </p>
+            </div>
+            <div className={`${styles.halves} ${styles.reveal}`}>
+              <div className={styles.half}>
+                <div className={styles.halfTop}>
+                  <span className={styles.pill}>The people</span>
+                  <span className={styles.k}>MachineSpeed</span>
+                </div>
+                <h3>A small team inside yours.</h3>
+                <p>
+                  No handoff from sales to delivery, and no bench of juniors. The engineers on your walkthrough are the
+                  ones who build your sprint and run it.
+                </p>
+                {/* TODO: confirm the nature of each team relationship before publishing. */}
+                <p className={styles.cred}>
+                  <b>Built by engineers who&rsquo;ve shipped agents and infrastructure</b> at the labs and clouds your
+                  stack already runs on.
+                </p>
+                <div className={styles.names}>
+                  {["OpenAI", "Google DeepMind", "Google Cloud", "AWS", "NVIDIA"].map((n) => <span key={n}>{n}</span>)}
+                </div>
+                {/* TODO: add GM name, headshot and engineer backgrounds once confirmed */}
+                <ul className={styles.plist}>
+                  {PEOPLE.map((p) => (
+                    <li key={p.title}><b>{p.title}</b><span>{p.body}</span></li>
+                  ))}
+                </ul>
               </div>
-
-              <div className={styles.cvScroll} tabIndex={0} role="region" aria-label="Order recovery blueprint">
-                <div className={styles.cvStage}>
-                  <svg width="880" height="400" viewBox="0 0 880 400" aria-hidden>
-                    <path
-                      d="M194 208 C 218 208, 216 196, 240 196"
-                      stroke="rgba(87,182,255,.55)"
-                      strokeWidth="1.5"
-                      fill="none"
-                    />
-                    <path
-                      d="M430 196 C 454 196, 454 200, 478 200"
-                      stroke="rgba(87,182,255,.55)"
-                      strokeWidth="1.5"
-                      fill="none"
-                    />
-                    <path
-                      d="M648 188 C 672 188, 664 104, 690 104"
-                      stroke="rgba(87,182,255,.55)"
-                      strokeWidth="1.5"
-                      fill="none"
-                    />
-                    <path
-                      d="M648 214 C 672 214, 664 322, 690 322"
-                      stroke="rgba(233,234,230,.22)"
-                      strokeWidth="1.5"
-                      fill="none"
-                    />
-                    <text
-                      x="664"
-                      y="140"
-                      fontFamily="Menlo,monospace"
-                      fontSize="9"
-                      fill="rgba(87,182,255,.85)"
-                    >
-                      true
-                    </text>
-                    <text
-                      x="662"
-                      y="290"
-                      fontFamily="Menlo,monospace"
-                      fontSize="9"
-                      fill="rgba(233,234,230,.35)"
-                    >
-                      false
-                    </text>
-                    <circle cx="194" cy="208" r="3" fill="rgba(87,182,255,.85)" />
-                    <circle cx="430" cy="196" r="3" fill="rgba(87,182,255,.85)" />
-                    <circle cx="648" cy="200" r="3" fill="rgba(87,182,255,.85)" />
-                  </svg>
-
-                  <Node
-                    left={24}
-                    top={160}
-                    width={170}
-                    kind="trigger"
-                    dot="var(--ms-blue)"
-                    title="New orders — Shopify"
-                    sub="webhook · every event"
-                    foot="streaming · live"
-                  />
-                  <Node
-                    left={240}
-                    top={140}
-                    kind="agent node"
-                    dot="#E9EAE6"
-                    title="Reconcile payments & inventory"
-                    sub="tools: stripe · netsuite · 3PL"
-                    foot={
-                      <>
-                        model: <b>routed by quirq</b>
-                      </>
-                    }
-                  />
-                  <Node
-                    left={478}
-                    top={150}
-                    width={170}
-                    kind="conditional"
-                    dot="#A8ABA3"
-                    title="Exception found?"
-                    sub="margin, stock or payment mismatch"
-                    foot="2 caught overnight"
-                  />
-                  <Node
-                    left={690}
-                    top={48}
-                    width={170}
-                    kind="agent node"
-                    dot="var(--ms-blue)"
-                    title="Recover the order"
-                    sub="requote shipping · retry payment"
-                    highlight
-                    foot={<b>→ decision to your phone · $12,400</b>}
-                  />
-                  <Node
-                    left={690}
-                    top={272}
-                    width={170}
-                    kind="function"
-                    dot="#6B6E67"
-                    title="Update ledger & report"
-                    sub="posts to the monthly number"
-                    foot="✓ done · logged"
-                  />
+              <div className={styles.half}>
+                <div className={styles.halfTop}>
+                  <span className={`${styles.pill} ${styles.pillBlue}`}>The infrastructure</span>
+                  <span className={styles.k}>Your cloud or on-prem</span>
+                </div>
+                <h3>One set of rules for every agent.</h3>
+                <p>
+                  Your security team reviews the controls once. Every blueprint after that runs under them: scoped
+                  access, approval gates, a full run record and your data rules.
+                </p>
+                <div>
+                  <span className={`${styles.k} ${styles.complyLabel}`}>Designed to meet</span>
+                  <ul className={styles.comply} aria-label="Compliance frameworks">
+                    {COMPLIANCE.map((c) => (
+                      <li key={c.name}><b>{c.name}</b><span>{c.body}</span></li>
+                    ))}
+                  </ul>
+                </div>
+                <div className={styles.chips} aria-label="Models we work with">
+                  {MODELS.map((m) => <span key={m}>{m}</span>)}
                 </div>
               </div>
-            </div>
-
-            <div className={styles.flowNote}>
-              one blueprint of many, model-agnostic, routed by <b>quirq</b> to
-              whatever does the job best today
+              <div className={styles.modelsLine}>
+                <blockquote>
+                  You shouldn&rsquo;t have to choose your model or apps.{" "}
+                  <em>Keep what you already use, or let us recommend what works.</em>
+                </blockquote>
+                <a className={`${styles.btn} ${styles.btnGhost}`} href="#faq">How we pick models and tools</a>
+              </div>
             </div>
           </div>
+        </section>
 
-          <div className={styles.term} tabIndex={0} role="region" aria-label="Overnight status">
-            <span className={styles.c}>$</span>{" "}
-            <span className={styles.w}>machinespeed status</span>
-            {"\n"}
-            <span className={styles.g}>✓</span> 14 workflows completed overnight
-            {"\n"}
-            <span className={styles.g}>✓</span> orders reconciled · reports
-            assembled · 2 exceptions recovered
-            {"\n"}
-            <span className={styles.c}>→</span> 2 decisions waiting:{" "}
-            <span className={styles.w}>reorder SKU-1148 ($12,400)</span> ·{" "}
-            <span className={styles.w}>cancel 3 subscriptions ($8,760/yr)</span>
+        {/* ============ FAQ ============ */}
+        <section className={styles.section} id="faq" aria-labelledby="faq-h">
+          <div className={styles.wrap}>
+            <div className={`${styles.head} ${styles.plain} ${styles.reveal}`}>
+              <h2 id="faq-h">The questions that come up before the call.</h2>
+            </div>
+            <div className={`${styles.faq} ${styles.reveal}`}>
+              {FAQ.map((column, ci) => (
+                <div key={ci}>
+                  {column.map(([q, a]) => (
+                    <details key={q}>
+                      <summary>{q}</summary>
+                      <p>{a}</p>
+                    </details>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
+        </section>
 
-          <p>
-            You shouldn&rsquo;t care what model you&rsquo;re using: that&rsquo;s
-            an implementation detail, ours not yours. The dials that stay in
-            your hands are the ones that matter:{" "}
-            <strong>output quality, time, and cost.</strong>
-          </p>
+        {/* ============ CLOSE ============ */}
+        <section className={styles.close} id="book" aria-labelledby="book-h">
+          <div className={styles.wrap}>
+            <div>
+              <span className={styles.label}>The walkthrough · 30 minutes</span>
+              <h2 id="book-h">
+                Bring us the workflow <span className={styles.accent}>you&rsquo;re tired of.</span>
+              </h2>
+              <p className={`${styles.sub} ${styles.forAny}`}>
+                The one that eats a morning every week, or the one that broke last month. Show it to us. We&rsquo;ll show
+                you, live, how it runs with the guardrails on, and tell you straight if it&rsquo;s not worth building.
+              </p>
+              <p className={`${styles.sub} ${styles.forStuck}`}>
+                Bring the one that keeps breaking. We&rsquo;ll show you, live, how the same workflow runs with
+                MachineSpeed, with scopes, approvals and a record, and how we&rsquo;d move it without pausing the business.
+              </p>
+              <p className={`${styles.sub} ${styles.forScale}`}>
+                Bring the one you want every team to have. We&rsquo;ll show you, live, how it runs once, under one set of
+                rules, and how the next team gets it in days.
+              </p>
+              <div className={styles.actions}>
+                {/* TODO: replace href with the live booking link */}
+                <a className={`${styles.btn} ${styles.btnPrimary}`} href="#book">
+                  Pick a time <Arrow />
+                </a>
+              </div>
+              <ul className={styles.agenda}>
+                {AGENDA.map((a) => (
+                  <li key={a.when}>
+                    <b>{a.when}</b>
+                    <span><strong>{a.lead}</strong> {a.body}</span>
+                  </li>
+                ))}
+              </ul>
+              {/* TODO: confirm this capacity statement reflects how you actually book sprints. */}
+              <p className={`${styles.sub} ${styles.capacity}`}>
+                We run a handful of sprints at a time, so the engineers on your call are the ones who build. If
+                we&rsquo;re full, we&rsquo;ll tell you the next start date rather than take the booking.
+              </p>
+            </div>
+            <Intake />
+          </div>
+        </section>
+      </main>
 
-          <h2>How we work</h2>
-          <ol className={styles.plan}>
-            <li>
-              <b>Agentic Audit.</b> Thirty minutes on how your business actually
-              runs. We name the workflow eating your week, size it in dollars,
-              and send a one-page written finding within 24 hours. No
-              obligation.
-            </li>
-            <li>
-              <b>Blueprint Sprint.</b> One workflow built on your existing stack
-              in two weeks, deployed with monitoring and fallbacks, handed over
-              working. You see the return before you commit to more.
-            </li>
-            <li>
-              <b>Run at machine speed.</b> We operate what we built. Monthly
-              report, monthly number, workflows compounding on one data layer.
-              Land small, expand on evidence, never on faith.
-            </li>
-          </ol>
-          <p>
-            The rule we scope by: you should see two to three times the
-            engagement value coming back, and you should be able to see it{" "}
-            <strong>before you sign, not after.</strong> Fixed scope, fixed
-            price, fixed end date, always.
-          </p>
-
-          <Calculator />
+      <footer className={styles.msFoot}>
+        <div className={styles.wrap}>
+          <div className={styles.foot}>
+            <div>
+              <Mark />
+              <p className={styles.footTag}>Agents that do the work at machine speed, with controls that answer to people.</p>
+            </div>
+            <nav className={styles.footLinks} aria-label="MachineSpeed footer">
+              {SECTIONS.slice(1, 3).map((s) => <a key={s.id} href={`#${s.id}`}>{s.label}</a>)}
+              <Link href="/whitepaper">Whitepaper</Link>
+              <a href="/llm.txt" target="_blank" rel="noreferrer">llm.txt<span className="sr-only"> (opens in a new tab)</span></a>
+              <a href="#book">Contact</a>
+            </nav>
+          </div>
+          <div className={styles.legal}>
+            <span>© 2026 MachineSpeed</span>
+            <span>built on <em>quirq</em> technology</span>
+          </div>
         </div>
+      </footer>
 
-        <div className={styles.attribution}>
-          <Bars />
-          <span className={styles.footCopy}>
-            © 2026 MACHINE SPEED · built on <b>quirq</b> technology
-          </span>
-        </div>
-      </div>
-
-      {/* The site's own footer, so this page closes the way every other route
-          does. The sub-brand line above it keeps the attribution the authored
-          footer carried. */}
+      {/* The site's own footer, so this page closes the way every other route does. */}
       <SiteFooter />
     </div>
   );
