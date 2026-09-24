@@ -153,12 +153,26 @@
 .actions { display: flex; flex-wrap: wrap; gap: 12px; }
 .hero .actions { justify-content: flex-end; }
 
-/* Trust strip: security and credentials under the hero actions. */
-.trust { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px 24px; margin-top: clamp(32px, 4vw, 48px); padding-top: 22px; border-top: 1px solid var(--ms-line); }
-.trust > div { display: grid; gap: 6px; align-content: start; }
-.trust dt { color: var(--ms-blue); }
-.trust dd { font-size: 14px; line-height: 1.45; color: var(--ms-ink-dim); }
-.trust dd::first-line { color: var(--ms-ink); }
+/* Trust strip: security and credentials under the hero actions. Marks are
+   monochrome and dim so they blend with the page; they come up to ink on hover. */
+.trust { display: grid; grid-template-columns: .85fr .95fr 1.05fr 1.55fr; gap: 20px 28px; margin-top: clamp(32px, 4vw, 48px); padding-top: 24px; border-top: 1px solid var(--ms-line); }
+.trustCell { display: grid; gap: 10px; align-content: start; }
+.trustCell > .k { color: var(--ms-blue); }
+.trustCell > .k em { font-style: normal; color: var(--ms-ink-faint); letter-spacing: .08em; }
+.trustRow { display: flex; align-items: center; gap: 10px; font-size: 14.5px; font-weight: 600; color: var(--ms-ink); }
+.trustRow svg { width: 24px; height: 24px; color: var(--ms-ink-dim); flex: none; }
+.trustCell > p { font-size: 13.5px; color: var(--ms-ink-dim); }
+.controls { display: grid; gap: 7px; }
+.controls li { display: flex; align-items: center; gap: 9px; font-size: 13.5px; font-weight: 500; color: var(--ms-ink); }
+.controls svg { width: 17px; height: 17px; color: var(--ms-ink-dim); flex: none; }
+.seals { display: flex; flex-wrap: wrap; gap: 6px; }
+.seals li { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px 5px 7px; border-radius: 8px; border: 1px solid var(--ms-line-strong); background: rgba(233,234,230,.03); font-family: var(--ms-mono); font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--ms-ink); }
+.seals svg { width: 14px; height: 14px; color: var(--ms-green); }
+.logos { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; }
+.logos li { display: inline-flex; align-items: center; gap: 8px; color: var(--ms-ink-dim); transition: color .2s; }
+.logos li:hover { color: var(--ms-ink); }
+.logos svg { width: 20px; height: 20px; flex: none; }
+.logos span { font-size: 13.5px; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; }
 
 /* The promise, where the live control room used to sit. */
 .promise { position: relative; margin-top: clamp(40px, 5vw, 64px); padding: clamp(24px, 3vw, 40px); border: 1px solid var(--ms-line-strong); border-radius: 18px; background: var(--ms-surface); display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 24px clamp(32px, 5vw, 72px); align-items: center; box-shadow: 0 40px 120px rgba(0,0,0,.45); }
@@ -447,7 +461,9 @@
 .agFact { display: grid; gap: 4px; padding-top: 14px; border-top: 1px solid var(--ms-line); }
 .agFact > p:not(.k) { font-size: 14px; color: var(--ms-ink-dim); }
 .agChips { display: flex; flex-wrap: wrap; gap: 6px; }
-.agChip { display: inline-flex; gap: 6px; align-items: center; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--ms-line); font-size: 12.5px; color: var(--ms-ink-dim); }
+.agChip { display: inline-flex; gap: 7px; align-items: center; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--ms-line); font-size: 12.5px; color: var(--ms-ink-dim); }
+.agChip svg { width: 13px; height: 13px; color: var(--ms-ink); opacity: .85; flex: none; }
+.agChip svg + svg { margin-left: -3px; }
 .agChip em { font-style: normal; font-family: var(--ms-mono); font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--ms-blue); }
 
 .agExample { border: 1px solid var(--ms-line); border-radius: 12px; padding: 16px; display: grid; gap: 8px; background: var(--ms-surface-2); }
@@ -714,6 +730,7 @@
   .roomGrid { grid-template-columns: 1fr 1fr; }
   .roomGrid .col:nth-child(2) { grid-column: 1 / -1; grid-row: 2; border-left: 0; border-top: 1px solid var(--ms-line); }
   .trust { grid-template-columns: 1fr 1fr; }
+  .trustWide { grid-column: 1 / -1; }
   .tl { grid-template-columns: 1fr 1fr; row-gap: 40px; }
   .tl::before, .tl::after { display: none; }
   .tl li { padding-top: 0; padding-left: 34px; }

@@ -113,12 +113,12 @@ export const CASES: UseCase[] = [
 
 /** Hero trust strip: the credibility that used to sit two sections down. */
 // TODO: confirm the certification claims and the team backgrounds before publishing.
-export const TRUST = [
-  { k: "Where it runs", v: "Your cloud or on-prem. Data stays where it is." },
-  { k: "Controls", v: "Scoped access, approval gates, every run recorded." },
-  { k: "Designed to meet", v: "SOC 2 · GDPR · CCPA · EU AI Act" },
-  { k: "Trusted by", v: "Engineers from OpenAI, Google DeepMind, Google Cloud, AWS, NVIDIA" },
-];
+export const TRUST = {
+  runs: { k: "Where it runs", title: "Your cloud or on-prem", body: "Data stays where it is." },
+  controls: { k: "Controls", items: ["Scoped access", "Approval gates", "Every run recorded"] },
+  meets: { k: "Designed to meet", badges: ["SOC 2", "GDPR", "CCPA", "EU AI Act"] },
+  trusted: { k: "Trusted by", lead: "Engineers from", names: ["OpenAI", "Google DeepMind", "Google Cloud", "AWS", "NVIDIA"] },
+};
 
 /** Slide 6 of the sales deck, "The bridge": any model, your applications, control in between. */
 export const BRIDGE = {

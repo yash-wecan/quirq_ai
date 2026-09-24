@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import type { Agent, AgentArea, Team } from "./content";
+import { Logo } from "./logos";
 import styles from "./machinespeed.module.css";
 
 /**
@@ -189,7 +190,7 @@ function Chips({ items }: { items: [string, string][] }) {
   return (
     <div className={styles.agChips}>
       {items.map(([n, s]) => (
-        <span key={n} className={styles.agChip}>{n} <em>{s}</em></span>
+        <span key={n} className={styles.agChip}><Logo name={n} />{n} <em>{s}</em></span>
       ))}
     </div>
   );

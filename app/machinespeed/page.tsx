@@ -4,6 +4,7 @@ import { Agents } from "./agents";
 import { AGENDA, BRIDGE, FAQ, MODELS, ORG, SECTIONS, TIMELINE, TRUST } from "./content";
 import { HeroWord } from "./hero-word";
 import { Intake } from "./intake";
+import { CloudGlyph, GateGlyph, Logo, RecordGlyph, ScopeGlyph, ShieldGlyph } from "./logos";
 // Commented out with their sections (2026-09-24): the control room and the use cases.
 // import { Cases } from "./cases";
 // import { ControlRoom } from "./control-room";
@@ -136,14 +137,33 @@ export default function MachineSpeed() {
               </ol>
             </div>
 
-            <dl className={styles.trust} aria-label="Security and credentials">
-              {TRUST.map((t) => (
-                <div key={t.k}>
-                  <dt className={styles.k}>{t.k}</dt>
-                  <dd>{t.v}</dd>
-                </div>
-              ))}
-            </dl>
+            <div className={styles.trust} aria-label="Security and credentials">
+              <div className={styles.trustCell}>
+                <span className={styles.k}>{TRUST.runs.k}</span>
+                <div className={styles.trustRow}><CloudGlyph /><b>{TRUST.runs.title}</b></div>
+                <p>{TRUST.runs.body}</p>
+              </div>
+              <div className={styles.trustCell}>
+                <span className={styles.k}>{TRUST.controls.k}</span>
+                <ul className={styles.controls}>
+                  {TRUST.controls.items.map((item, i) => (
+                    <li key={item}>{[<ScopeGlyph key="s" />, <GateGlyph key="g" />, <RecordGlyph key="r" />][i]}{item}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className={styles.trustCell}>
+                <span className={styles.k}>{TRUST.meets.k}</span>
+                <ul className={styles.seals}>
+                  {TRUST.meets.badges.map((b) => <li key={b}><ShieldGlyph />{b}</li>)}
+                </ul>
+              </div>
+              <div className={`${styles.trustCell} ${styles.trustWide}`}>
+                <span className={styles.k}>{TRUST.trusted.k} <em>· {TRUST.trusted.lead}</em></span>
+                <ul className={styles.logos}>
+                  {TRUST.trusted.names.map((n) => <li key={n}><Logo name={n} /><span>{n}</span></li>)}
+                </ul>
+              </div>
+            </div>
 
             {/* Live control room (commented out, 2026-09-24): <ControlRoom /> */}
           </div>
