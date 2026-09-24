@@ -1,13 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
-import { SiteFooter } from "@/components/ui/footer";
-import { Cases } from "./cases";
-import { COMPLIANCE, AGENDA, CASES, FAQ, FOUNDATION, MODELS, PEOPLE, SECTIONS, TIMELINE } from "./content";
-import { ControlRoom } from "./control-room";
+import { Agents } from "./agents";
+import { AGENDA, BRIDGE, FAQ, MODELS, ORG, SECTIONS, TIMELINE, TRUST } from "./content";
 import { HeroWord } from "./hero-word";
-import { BEFORE } from "./diagrams";
 import { Intake } from "./intake";
-import { ModeSwitch } from "./mode-switch";
+// Commented out with their sections (2026-09-24): the control room and the use cases.
+// import { Cases } from "./cases";
+// import { ControlRoom } from "./control-room";
+// import { BEFORE } from "./diagrams";
 import { SectionLinks } from "./section-nav";
 import styles from "./machinespeed.module.css";
 
@@ -16,12 +16,17 @@ import styles from "./machinespeed.module.css";
  *
  * A sub-brand ("built on quirq technology") reached from the Enterprise link in
  * the site nav, opened in a new tab. It keeps the brandkit it was authored
- * with, but wears quirq's chrome: the site nav above, SiteFooter below.
+ * with and its own chrome: the site Nav hides itself on this route and the
+ * page closes with its own footer, so there is one header and one footer.
  *
- * Server-rendered apart from six narrow client islands: the hero's changing
- * word, the reader-mode switch, the control room, the use-case tabs, the
- * intake form and the section-link highlighter.
- * Copy lives in content.ts; the before-state diagrams in diagrams.tsx.
+ * Server-rendered apart from four narrow client islands: the hero's changing
+ * word, the agents hub, the intake form and the section-link highlighter.
+ * "What's underneath" is a diagram animated with CSS alone.
+ * Copy lives in content.ts.
+ *
+ * Commented out below on 2026-09-24 feedback, not deleted: the hero control
+ * room, Foundation, the use cases ("The same workflow, both ways") and People +
+ * Infrastructure. Their copy and components are still in this folder.
  */
 
 export const metadata: Metadata = {
@@ -29,7 +34,7 @@ export const metadata: Metadata = {
   // layout's "· quirq" title template.
   title: { absolute: "MachineSpeed" },
   description:
-    "Don't duct-tape AI onto your business. MachineSpeed engineers put governed AI agents into production in 14 days, on the quirq runtime.",
+    "Don't duct-tape AI onto your business. Book a 45-minute call with MachineSpeed and walk away with a live agent in production in 24 hours.",
 };
 
 export const viewport: Viewport = {
@@ -53,6 +58,7 @@ function Arrow() {
   return <span className={styles.arr} aria-hidden>→</span>;
 }
 
+/* Icons for the Foundation section, kept with it while it is commented out.
 const ICONS: Record<(typeof FOUNDATION)[number]["icon"], React.ReactNode> = {
   scope: (
     <div className={styles.icoScope}>
@@ -75,6 +81,7 @@ const ICONS: Record<(typeof FOUNDATION)[number]["icon"], React.ReactNode> = {
     </div>
   ),
 };
+*/
 
 export default function MachineSpeed() {
   return (
@@ -84,7 +91,7 @@ export default function MachineSpeed() {
           <Mark />
           <SectionLinks />
           <a className={`${styles.btn} ${styles.btnPrimary} ${styles.btnSm}`} href="#book">
-            Bring us a workflow
+            Get your agentic org
           </a>
         </div>
       </header>
@@ -102,85 +109,134 @@ export default function MachineSpeed() {
             </h1>
 
             <div className={styles.heroFoot}>
-              <div>
-                <p className={`${styles.sub} ${styles.forAny}`}>
-                  Most companies duct-tape AI onto the business. A prompt here, a Zap there, one person who knows how it
-                  all fits. It holds right up until it touches money or a customer.{" "}
-                  <strong>
-                    We do it the other way round: agents built into how your company already runs, guardrails on, the
-                    first one live in 14 days.
-                  </strong>
-                </p>
-                <p className={`${styles.sub} ${styles.forStuck}`}>
-                  You moved fast, and now you own the duct tape. Prompts, Zaps and scripts that break when someone
-                  renames a column, and nobody can say what they did last week.{" "}
-                  <strong>
-                    We move what works onto one runtime with scopes, approvals and a record of every run. The business
-                    doesn&rsquo;t stop while we do it.
-                  </strong>
-                </p>
-                <p className={`${styles.sub} ${styles.forScale}`}>
-                  AI already works in one team. Every other team wants it, and nobody owns the rules.{" "}
-                  <strong>
-                    We put your agents on one runtime so the second team starts where the first one finished, under
-                    controls your security lead signed off once.
-                  </strong>
-                </p>
-                <ModeSwitch />
-              </div>
+              <p className={styles.sub}>
+                Governed AI agents, built into how your company already runs.{" "}
+                <strong>Not a pilot, not a deck: a working agent on your systems, with the controls on.</strong>
+              </p>
               <div className={styles.actions}>
                 <a className={`${styles.btn} ${styles.btnPrimary}`} href="#book">
-                  Bring us a workflow <Arrow />
+                  Get your agentic org <Arrow />
                 </a>
-                <a className={`${styles.btn} ${styles.btnGhost}`} href="#room">
-                  See it running ↓
+                <a className={`${styles.btn} ${styles.btnGhost}`} href="#agents">
+                  See ours ↓
                 </a>
               </div>
             </div>
 
-            <ControlRoom />
-          </div>
-        </section>
-
-        {/* ============ FOUNDATION ============ */}
-        <section className={styles.section} id="foundation" aria-labelledby="fnd-h">
-          <div className={`${styles.wrap} ${styles.fndLayout}`}>
-            <div className={`${styles.head} ${styles.reveal}`}>
-              <span className={styles.label}>The foundation</span>
-              <h2 id="fnd-h">Every agent you switch on is a new hire with a master key.</h2>
-              <p>
-                It can read your ledger, email your customers and move money. That makes it the most privileged hire
-                you&rsquo;ve ever made, and most teams onboard it in an afternoon. Before the first one goes live with
-                us, four things are already settled.
+            {/* The promise, where the live control room used to sit. */}
+            <div className={styles.promise}>
+              <p className={styles.promiseBig}>
+                Book a 45-minute call. <em>Walk away with a live agent in production in 24 hours.</em>
               </p>
-              <p className={styles.hook}>
-                Ask on the call and we&rsquo;ll show you all four <a href="#book">on your own workflow</a>.
-              </p>
+              <ol className={styles.path} aria-label="How it goes">
+                <li><b>01</b><span><strong>The call.</strong> 45 minutes, one workflow, a straight answer.</span></li>
+                <li><b>02</b><span><strong>24 hours.</strong> A live agent on your systems, controls on.</span></li>
+                <li><b>03</b><span><strong>Feedback.</strong> You run it, we tune it with you.</span></li>
+                <li><b>04</b><span><strong>Expand.</strong> More team members, more flows, more systems.</span></li>
+              </ol>
             </div>
-            <div className={`${styles.found} ${styles.reveal}`}>
-              {FOUNDATION.map((f) => (
-                <div key={f.label} className={styles.fnd}>
-                  <div className={styles.ico} aria-hidden>{ICONS[f.icon]}</div>
-                  <span className={styles.k}>{f.label}</span>
-                  <h3>{f.title}</h3>
-                  <p>{f.body}</p>
+
+            <dl className={styles.trust} aria-label="Security and credentials">
+              {TRUST.map((t) => (
+                <div key={t.k}>
+                  <dt className={styles.k}>{t.k}</dt>
+                  <dd>{t.v}</dd>
                 </div>
               ))}
+            </dl>
+
+            {/* Live control room (commented out, 2026-09-24): <ControlRoom /> */}
+          </div>
+        </section>
+
+        {/* ============ OUR AGENTS ============ */}
+        <section className={styles.section} id="agents" aria-labelledby="agents-h">
+          <div className={styles.wrap}>
+            <div className={`${styles.head} ${styles.split} ${styles.reveal}`}>
+              <div>
+                <span className={styles.label}>See it in action</span>
+                <h2 id="agents-h">
+                  MachineSpeed runs on <span className={styles.accent}>agents too.</span>
+                </h2>
+              </div>
+              <p>
+                Here are some of the agents that work alongside our team. Click any area to see what they handle, and
+                where they check in with us.
+              </p>
+            </div>
+            <div className={styles.reveal}>
+              <Agents org={ORG} />
             </div>
           </div>
         </section>
 
-        {/* ============ IN PRACTICE ============ */}
-        <section className={styles.section} id="cases" aria-labelledby="cases-h">
+        {/* ============ WHAT'S UNDERNEATH (from slide 6 of the deck) ============ */}
+        <section className={`${styles.section} ${styles.tint}`} id="how" aria-labelledby="how-h">
           <div className={styles.wrap}>
             <div className={`${styles.head} ${styles.split} ${styles.reveal}`}>
-              <h2 id="cases-h">The same workflow, both ways.</h2>
-              <p>
-                Duct-taped is what we usually find on day one. With MachineSpeed is what it runs on now. Toggle each one
-                and look for where the person sits.
-              </p>
+              <div>
+                <span className={styles.label}>What&rsquo;s underneath</span>
+                <h2 id="how-h">
+                  Any model. Your apps. <span className={styles.accent}>Control in between.</span>
+                </h2>
+              </div>
+              <p>Every agent runs through the same layers of control: scoped access, approvals where you set them, a record of every step.</p>
             </div>
-            <Cases cases={CASES} before={BEFORE} />
+
+            {/* One run, drawn: a trigger comes up from your apps, the control layer asks the model,
+                stops at a person where a gate is set, then acts back in your apps. All CSS. */}
+            <div className={`${styles.diagram} ${styles.reveal}`} role="img" aria-label="A run comes in from your applications, passes through the control layer, which asks the model, checks scope, stops at a person where you set a gate, and records every step, then acts back in your applications.">
+              <div className={styles.band} data-part="models">
+                <span className={styles.k}>Any model</span>
+                <div className={styles.chips}>
+                  {MODELS.map((m) => <span key={m}>{m}</span>)}
+                </div>
+              </div>
+
+              <div className={styles.wireV} data-part="up" aria-hidden><i /><i /></div>
+
+              <div className={styles.runtimeRow}>
+                <div className={styles.runtime} data-part="runtime">
+                  <div className={styles.runtimeH}>
+                    <span className={styles.bars} aria-hidden><i /><i /><i /></span>
+                    <b>Control layer</b>
+                    <span className={styles.k}>one set of rules for every agent</span>
+                  </div>
+                  <ul className={styles.layers}>
+                    {BRIDGE.layers.map((l) => (
+                      <li key={l.title} className={styles.layer} data-part={l.title} title={l.body}>
+                        <i aria-hidden>{l.icon}</i>
+                        <h3>{l.title}</h3>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className={styles.gateWire} data-part="gate" aria-hidden><i /></div>
+                <div className={styles.person} data-part="person">
+                  <span className={styles.avatar} aria-hidden />
+                  <b>A person</b>
+                  <span>approves money &amp; customers</span>
+                </div>
+              </div>
+
+              <div className={styles.wireV} data-part="down" aria-hidden><i /><i /></div>
+
+              <div className={styles.band} data-part="apps">
+                <span className={styles.k}>Your apps</span>
+                <div className={styles.chips}>
+                  {BRIDGE.apps.map((a) => <span key={a}>{a}</span>)}
+                </div>
+              </div>
+
+              {/* The caption cycles with the dots: four phases, one run. */}
+              <div className={styles.phases} aria-hidden>
+                <span>Trigger from your apps</span>
+                <span>Reasoning with your model</span>
+                <span>Scope checked · waiting for a person</span>
+                <span>Acting in your apps, on the record</span>
+              </div>
+            </div>
+            <p className={styles.caseNote}>Illustrative application list. Hover a layer for what it does.</p>
           </div>
         </section>
 
@@ -188,17 +244,14 @@ export default function MachineSpeed() {
         <section className={styles.section} id="engagement" aria-labelledby="eng-h">
           <div className={styles.wrap}>
             <div className={`${styles.head} ${styles.lede} ${styles.reveal}`}>
-              <p className={styles.big}>
-                No discovery phase. No strategy deck. <em>No retainer.</em>
-              </p>
-              <h2 id="eng-h">
-                Thirty minutes to a straight answer. Fourteen days to production. Then the next team, faster.
+              <h2 id="eng-h" className={styles.big}>
+                Book a 45-minute call. <em>Walk away with a live agent in production in 24 hours.</em>
               </h2>
             </div>
             <div className={`${styles.commit} ${styles.reveal}`} aria-label="What every engagement commits to">
-              <div><b>14 days</b><span>from the first call to a workflow live in production</span></div>
-              <div><b>Fixed price</b><span>every sprint, agreed before day one, with an end date</span></div>
-              <div><b>One number</b><span>per workflow, reported to you every month</span></div>
+              <div><b>24 hours</b><span>from the call to a live agent in production on your own systems</span></div>
+              <div><b>Feedback</b><span>you run it, we tune what it does alone and where it stops for you</span></div>
+              <div><b>Expand</b><span>more team members, more flows, more systems, under the same rules</span></div>
             </div>
             <ol className={`${styles.tl} ${styles.reveal}`}>
               {TIMELINE.map((step) => (
@@ -215,17 +268,17 @@ export default function MachineSpeed() {
             </ol>
             <div className={`${styles.rule} ${styles.reveal}`}>
               <p>
-                <b>Our scoping rule:</b> if we can&rsquo;t show you 2–3× the sprint&rsquo;s value on the call, we&rsquo;ll
-                say so and we won&rsquo;t propose one. You&rsquo;ll have lost half an hour.
+                <b>Our scoping rule:</b> if we can&rsquo;t show you on the call that the first agent will be worth it,
+                we&rsquo;ll say so and we won&rsquo;t propose one. You&rsquo;ll have lost 45 minutes.
               </p>
               <a className={`${styles.btn} ${styles.btnPrimary}`} href="#book">
-                Book the walkthrough <Arrow />
+                Get your agentic org <Arrow />
               </a>
             </div>
           </div>
         </section>
 
-        {/* ============ PEOPLE + INFRASTRUCTURE ============ */}
+        {/* ============ PEOPLE + INFRASTRUCTURE (commented out, 2026-09-24) ============
         <section className={`${styles.section} ${styles.tint}`} aria-labelledby="two-h">
           <div className={styles.wrap}>
             <div className={`${styles.head} ${styles.split} ${styles.reveal}`}>
@@ -247,7 +300,7 @@ export default function MachineSpeed() {
                   No handoff from sales to delivery, and no bench of juniors. The engineers on your walkthrough are the
                   ones who build your sprint and run it.
                 </p>
-                {/* TODO: confirm the nature of each team relationship before publishing. */}
+                TODO: confirm the nature of each team relationship before publishing.
                 <p className={styles.cred}>
                   <b>Built by engineers who&rsquo;ve shipped agents and infrastructure</b> at the labs and clouds your
                   stack already runs on.
@@ -255,7 +308,7 @@ export default function MachineSpeed() {
                 <div className={styles.names}>
                   {["OpenAI", "Google DeepMind", "Google Cloud", "AWS", "NVIDIA"].map((n) => <span key={n}>{n}</span>)}
                 </div>
-                {/* TODO: add GM name, headshot and engineer backgrounds once confirmed */}
+                TODO: add GM name, headshot and engineer backgrounds once confirmed
                 <ul className={styles.plist}>
                   {PEOPLE.map((p) => (
                     <li key={p.title}><b>{p.title}</b><span>{p.body}</span></li>
@@ -294,6 +347,7 @@ export default function MachineSpeed() {
             </div>
           </div>
         </section>
+        ============ END PEOPLE + INFRASTRUCTURE ============ */}
 
         {/* ============ FAQ ============ */}
         <section className={styles.section} id="faq" aria-labelledby="faq-h">
@@ -320,26 +374,19 @@ export default function MachineSpeed() {
         <section className={styles.close} id="book" aria-labelledby="book-h">
           <div className={styles.wrap}>
             <div>
-              <span className={styles.label}>The walkthrough · 30 minutes</span>
+              <span className={styles.label}>The call · 45 minutes</span>
               <h2 id="book-h">
-                Bring us the workflow <span className={styles.accent}>you&rsquo;re tired of.</span>
+                Get your <span className={styles.accent}>agentic org.</span>
               </h2>
-              <p className={`${styles.sub} ${styles.forAny}`}>
-                The one that eats a morning every week, or the one that broke last month. Show it to us. We&rsquo;ll show
+              <p className={styles.sub}>
+                Bring the workflow that eats a morning every week, or the one that broke last month. We&rsquo;ll show
                 you, live, how it runs with the guardrails on, and tell you straight if it&rsquo;s not worth building.
-              </p>
-              <p className={`${styles.sub} ${styles.forStuck}`}>
-                Bring the one that keeps breaking. We&rsquo;ll show you, live, how the same workflow runs with
-                MachineSpeed, with scopes, approvals and a record, and how we&rsquo;d move it without pausing the business.
-              </p>
-              <p className={`${styles.sub} ${styles.forScale}`}>
-                Bring the one you want every team to have. We&rsquo;ll show you, live, how it runs once, under one set of
-                rules, and how the next team gets it in days.
+                If it is, a live agent is in production on your systems within 24 hours.
               </p>
               <div className={styles.actions}>
                 {/* TODO: replace href with the live booking link */}
                 <a className={`${styles.btn} ${styles.btnPrimary}`} href="#book">
-                  Pick a time <Arrow />
+                  Book a 45-minute call <Arrow />
                 </a>
               </div>
               <ul className={styles.agenda}>
@@ -350,9 +397,9 @@ export default function MachineSpeed() {
                   </li>
                 ))}
               </ul>
-              {/* TODO: confirm this capacity statement reflects how you actually book sprints. */}
+              {/* TODO: confirm this capacity statement reflects how you actually take on new orgs. */}
               <p className={`${styles.sub} ${styles.capacity}`}>
-                We run a handful of sprints at a time, so the engineers on your call are the ones who build. If
+                We take on a handful of new orgs at a time, so the engineers on your call are the ones who build. If
                 we&rsquo;re full, we&rsquo;ll tell you the next start date rather than take the booking.
               </p>
             </div>
@@ -382,8 +429,6 @@ export default function MachineSpeed() {
         </div>
       </footer>
 
-      {/* The site's own footer, so this page closes the way every other route does. */}
-      <SiteFooter />
     </div>
   );
 }

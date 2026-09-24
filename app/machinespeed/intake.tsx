@@ -5,14 +5,17 @@ import { PICKS } from "./content";
 import styles from "./machinespeed.module.css";
 
 /**
- * "What would you bring?" The intake card beside the closing section.
+ * The optional intake card beside the closing section. Booking the call is
+ * the main action; this is for people who would rather write first. It opens
+ * collapsed and expands on request.
  *
  * TODO: this is still the prototype from the source file. Submitting only
  * shows the confirmation; nothing is sent anywhere. Wire it to a real
- * endpoint (or a booking link) before this route ships.
+ * endpoint before this route ships.
  */
 export function Intake() {
   const id = useId();
+  const [open, setOpen] = useState(false);
   const [pick, setPick] = useState<string | null>(null);
   const [warn, setWarn] = useState(false);
   const [sent, setSent] = useState(false);
@@ -35,12 +38,28 @@ export function Intake() {
     setSent(true);
   };
 
+  if (!open) {
+    return (
+      <div className={`${styles.intake} ${styles.intakeClosed}`}>
+        <span className={styles.k}>Optional</span>
+        <h3>Prefer to write first?</h3>
+        <p>
+          Tell us about the workflow in a few lines and we&rsquo;ll come to the call already knowing it. You won&rsquo;t
+          repeat any of it.
+        </p>
+        <button className={`${styles.btn} ${styles.btnGhost}`} type="button" onClick={() => setOpen(true)} aria-expanded={false} aria-controls={`${id}-form`}>
+          Tell us about your workflow
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <form className={styles.intake} noValidate onSubmit={submit}>
+    <form className={styles.intake} id={`${id}-form`} noValidate onSubmit={submit}>
       {sent ? (
         <div className={styles.sent} role="status">
           <b>✓ Got it</b>
-          <p>We&rsquo;ll reply within one business day to set up your walkthrough. You won&rsquo;t need to repeat any of this on the call.</p>
+          <p>We&rsquo;ll read it before the call. Book a time above, or we&rsquo;ll reply within one business day to set one up.</p>
         </div>
       ) : (
         <div className={styles.intakeFields}>
@@ -74,10 +93,10 @@ export function Intake() {
             </div>
           </div>
           <button className={`${styles.btn} ${styles.btnPrimary}`} type="submit">
-            Request my walkthrough <span className={styles.arr} aria-hidden>→</span>
+            Send it ahead of the call <span className={styles.arr} aria-hidden>→</span>
           </button>
           <p className={`${styles.intakeFoot}${warn ? ` ${styles.intakeWarn}` : ""}`} aria-live="polite">
-            {warn ? "Add a work email so we can reply." : "We reply within one business day. No sequence, no SDR."}
+            {warn ? "Add a work email so we can reply." : "Optional. We reply within one business day. No sequence, no SDR."}
           </p>
         </div>
       )}

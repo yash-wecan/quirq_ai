@@ -111,6 +111,205 @@ export const CASES: UseCase[] = [
   },
 ];
 
+/** Hero trust strip: the credibility that used to sit two sections down. */
+// TODO: confirm the certification claims and the team backgrounds before publishing.
+export const TRUST = [
+  { k: "Where it runs", v: "Your cloud or on-prem. Data stays where it is." },
+  { k: "Controls", v: "Scoped access, approval gates, every run recorded." },
+  { k: "Designed to meet", v: "SOC 2 · GDPR · CCPA · EU AI Act" },
+  { k: "Trusted by", v: "Engineers from OpenAI, Google DeepMind, Google Cloud, AWS, NVIDIA" },
+];
+
+/** Slide 6 of the sales deck, "The bridge": any model, your applications, control in between. */
+export const BRIDGE = {
+  layers: [
+    { icon: "◈", title: "Security", body: "Built to meet SOC 2, GDPR, CCPA and the EU AI Act. Encryption in transit and at rest; data retention you set." },
+    { icon: "⌘", title: "Governance", body: "Fine-grained access per agent and per workflow. Human review where you decide it's needed." },
+    { icon: "◎", title: "Observability", body: "A record of every action, tool call and approval. Know what your agents did, when, and why." },
+    { icon: "☁", title: "Your infrastructure", body: "Deploy in your own cloud where residency, network or policy requires it." },
+    { icon: "↻", title: "Reliability", body: "Retries, failover and rate-limit handling across integrations, so agents keep running when upstream APIs don't." },
+    { icon: "⤢", title: "Composability", body: "Swap models, tools and providers without rebuilding. Your workflows and permissions carry over." },
+  ],
+  apps: ["Gmail", "Google Workspace", "Microsoft 365", "Slack", "Teams", "HubSpot", "Salesforce", "Notion", "Jira", "Linear", "GitHub", "Shopify", "Stripe", "QuickBooks", "Zendesk", "WhatsApp", "Your internal tools"],
+};
+
+export type AgentKind = "alone" | "gate" | "flag";
+
+export type AgentArea = {
+  name: string;
+  desc: string;
+  /** alone = handled on its own · gate = waits for a person · flag = raised an issue */
+  kind: AgentKind;
+  /** The role id (see ORG) it waits for, when kind is "gate". */
+  who?: string;
+  /** One line for the ticker. */
+  short: string;
+  trig: string;
+  res: string;
+  tools: [name: string, scope: string][];
+  log: [verb: "read" | "draft" | "write" | "wait" | "flag" | "ok", text: string][];
+};
+
+export type Agent = {
+  id: string;
+  sector: string;
+  name: string;
+  role: string;
+  works: [name: string, scope: string][];
+  stops: string;
+  areas: AgentArea[];
+};
+
+/** "MachineSpeed runs on agents too." Three of the agents alongside our own team. Examples are illustrative. */
+export const AGENTS: Agent[] = [
+  {
+    id: "eng",
+    sector: "Engineering",
+    name: "Sir Merge-a-Lot",
+    role: "Keeps our product team shipping. It reviews code, watches production and keeps tickets and docs current.",
+    works: [["GitHub", "read · comment"], ["Sentry", "read"], ["Logs", "read"], ["Linear", "write"], ["Docs", "draft"], ["Slack", "internal"]],
+    stops: "Merges, deploys and rollbacks. Anything a customer will read.",
+    areas: [
+      {
+        name: "Code review", desc: "Reviews every pull request for bugs, missing tests and risky changes.", kind: "flag", short: "Flagged a missing index in PR #418",
+        trig: "PR #418 opened", res: "Left 3 comments and flagged a missing database index before merge.", tools: [["GitHub", "read · comment"]],
+        log: [["read", "PR #418 · 14 files"], ["write", "3 review comments"], ["flag", "missing index · orders.user_id"]],
+      },
+      {
+        name: "Alert triage", desc: "Groups noisy alerts, finds the change that caused them and prepares a fix.", kind: "gate", who: "oncall", short: "Traced an error spike to PR #412",
+        trig: "Error spike on /orders", res: "41 alerts merged into one incident and traced to PR #412. A revert is ready; the rollback waits for the on-call engineer.", tools: [["Sentry", "read"], ["Logs", "read"], ["GitHub", "draft PR"]],
+        log: [["read", "41 alerts in 30 min"], ["read", "last 6 deploys"], ["draft", "revert PR #413"], ["wait", "rollback · on-call engineer"]],
+      },
+      {
+        name: "Bug reports", desc: "Turns customer bug reports into reproduced, ready-to-fix tickets.", kind: "alone", short: "Filed LIN-311 from a customer email",
+        trig: "Customer email: “export does nothing”", res: "Reproduced in staging. LIN-311 filed with the steps, logs and affected account.", tools: [["Logs", "read"], ["Linear", "write"]],
+        log: [["read", "support email"], ["read", "/exports errors"], ["write", "LIN-311 created"]],
+      },
+      {
+        name: "Dependencies", desc: "Keeps packages current and patches security advisories.", kind: "alone", short: "Opened a PR for 6 package updates",
+        trig: "Weekly schedule", res: "PR opened for 6 updates, including 1 security fix. Tests pass. Merging stays with us.", tools: [["GitHub", "draft PR"]],
+        log: [["read", "212 packages, advisories"], ["draft", "PR #420 · 6 updates"]],
+      },
+      {
+        name: "Release notes", desc: "Writes the changelog and customer release notes from merged work.", kind: "gate", who: "product", short: "Drafted v2.14 release notes",
+        trig: "v2.14 tagged", res: "Changelog and customer email drafted from 23 merged PRs. Publishing waits for the product lead.", tools: [["GitHub", "read"], ["Docs", "draft"]],
+        log: [["read", "23 PRs since v2.13"], ["draft", "changelog + email"], ["wait", "publish · product lead"]],
+      },
+      {
+        name: "Docs upkeep", desc: "Keeps the API docs in step with the code.", kind: "alone", short: "Updated the docs for /exports",
+        trig: "PR #409 merged", res: "API reference updated for the new /exports endpoint, ready for review.", tools: [["GitHub", "read"], ["Docs", "draft"]],
+        log: [["read", "PR #409"], ["draft", "api/exports page"]],
+      },
+    ],
+  },
+  {
+    id: "devrel",
+    sector: "Content & DevRel",
+    name: "Docs Vader",
+    role: "Keeps developers and customers hearing from us: tutorials, community answers, posts and a blog that stays accurate.",
+    works: [["GitHub", "read"], ["Discord", "read · draft"], ["Notion", "read"], ["Webflow", "draft"], ["LinkedIn & X", "draft"], ["Search Console", "read"]],
+    stops: "Anything published under the company name. Any claim without a source.",
+    areas: [
+      {
+        name: "Tutorials", desc: "Turns new features into step-by-step guides with code that actually runs.", kind: "gate", who: "reviewer", short: "Wrote a webhooks guide with a sample repo",
+        trig: "Webhooks feature shipped", res: "Step-by-step guide and sample repo drafted. All 9 code snippets were run before review. Publishing waits for an engineer's check.", tools: [["GitHub", "read"], ["Webflow", "draft"]],
+        log: [["read", "webhooks PR + API spec"], ["draft", "guide + sample repo"], ["ok", "9 of 9 snippets run"], ["wait", "publish · reviewing engineer"]],
+      },
+      {
+        name: "Community", desc: "Answers developer questions in Discord and GitHub, and spots patterns the team should know about.", kind: "flag", short: "Spotted a recurring webhook error in #help",
+        trig: "Daily sweep of #help and GitHub Discussions", res: "14 questions answered from the docs. 5 people hit the same webhook error this week, so it opened a docs issue and told engineering.", tools: [["Discord", "read · draft"], ["GitHub", "read"]],
+        log: [["read", "Discord #help, GitHub Discussions"], ["draft", "14 answers from the docs"], ["flag", "same signature error × 5"], ["write", "docs issue + note to #eng"]],
+      },
+      {
+        name: "Blog drafts", desc: "Writes long-form posts from material we already have.", kind: "gate", who: "marketing", short: "Drafted a customer story from a postmortem",
+        trig: "Engineering postmortem shared", res: "1,400-word customer story drafted with every fact linked. Staged in Webflow, not live.", tools: [["Notion", "read"], ["Webflow", "draft"]],
+        log: [["read", "INC-88 postmortem"], ["draft", "staged blog post"], ["wait", "publish · marketing lead"]],
+      },
+      {
+        name: "Social posts", desc: "Turns launches, tutorials and customer wins into posts in our voice.", kind: "gate", who: "marketing", short: "Drafted posts for the webhooks launch",
+        trig: "Webhooks guide approved", res: "LinkedIn post and a 5-post X thread drafted in our voice guide, linking the new tutorial. Posting waits for the marketing lead.", tools: [["Notion", "read"], ["LinkedIn & X", "draft"]],
+        log: [["read", "voice guide, tutorial"], ["draft", "LinkedIn post, X thread"], ["wait", "post · marketing lead"]],
+      },
+      {
+        name: "Fact check", desc: "Checks every claim and code sample in a draft before we publish it.", kind: "flag", short: "Sent back a claim with no source",
+        trig: "New draft: “Why checkout breaks”", res: "11 of 12 claims sourced. “3× faster checkout” has no source and went back to the writer.", tools: [["Notion", "read"]],
+        log: [["read", "draft + 6 sources"], ["flag", "“3× faster” · no source"]],
+      },
+      {
+        name: "SEO refresh", desc: "Finds posts and docs losing search traffic and drafts the fixes.", kind: "alone", short: "Drafted fixes for 4 slipping pages",
+        trig: "Weekly Search Console check", res: "4 pages slipping, including 2 docs pages. New titles, descriptions and internal links drafted.", tools: [["Search Console", "read"], ["Webflow", "draft"]],
+        log: [["read", "90 days of rankings"], ["draft", "4 page edits"]],
+      },
+    ],
+  },
+  {
+    id: "cos",
+    sector: "Co-founder",
+    name: "Chief of Stuff",
+    role: "Carries our founders' operating load: outreach, the numbers, inbox, meetings, hiring and investors.",
+    works: [["Gmail", "read · draft"], ["Calendar", "read"], ["LinkedIn", "read"], ["HubSpot", "read · tasks"], ["Stripe & Mercury", "read"], ["Ashby", "read"]],
+    stops: "Anything sent in a founder's name, including every outreach email. Money, hires and investors.",
+    areas: [
+      {
+        name: "Outreach", desc: "Researches the right prospects, drafts personal first emails and keeps follow-ups on schedule.", kind: "gate", who: "founders", short: "Drafted 12 personal first emails",
+        trig: "12 new companies match our target list", res: "Researched each company and drafted a personal first email for each one, with follow-ups set for day 4 and day 9. Sending waits for a founder.", tools: [["LinkedIn", "read"], ["HubSpot", "read · tasks"], ["Gmail", "draft"]],
+        log: [["read", "12 companies · site, news, LinkedIn"], ["draft", "12 first emails"], ["write", "follow-up tasks in HubSpot"], ["wait", "send · a founder"]],
+      },
+      {
+        name: "Metrics & runway", desc: "Pulls revenue, cash, pipeline and usage into one brief every Monday.", kind: "alone", short: "Wrote the Monday brief",
+        trig: "Monday 06:30", res: "Brief ready: MRR $84.2k, 17 months of runway, 38 open deals. Every number links to its source.", tools: [["Stripe & Mercury", "read"], ["HubSpot", "read"]],
+        log: [["read", "subscriptions, balances"], ["read", "pipeline"], ["draft", "Monday brief"]],
+      },
+      {
+        name: "Inbox", desc: "Sorts the inbox and drafts the routine replies.", kind: "alone", short: "Sorted 183 overnight emails",
+        trig: "183 new emails overnight", res: "7 need a founder today. 41 routine replies drafted. The rest labelled and filed.", tools: [["Gmail", "read · draft"]],
+        log: [["read", "183 threads"], ["draft", "41 replies"], ["ok", "7 surfaced for today"]],
+      },
+      {
+        name: "Meeting prep", desc: "Prepares a one-page brief before every external call.", kind: "alone", short: "Prepped the Acme call",
+        trig: "Acme call at 14:00", res: "Brief: usage down 12%, 2 open tickets, renewal in 45 days.", tools: [["Calendar", "read"], ["HubSpot", "read"], ["Gmail", "read"]],
+        log: [["read", "Acme account, last 3 threads"], ["draft", "one-page brief"]],
+      },
+      {
+        name: "Hiring", desc: "Screens applicants against our rubric and holds interview slots.", kind: "gate", who: "cto", short: "Shortlisted 6 of 42 applicants",
+        trig: "42 applicants for Senior Backend", res: "6 shortlisted with a reason for each. Invites wait for the CTO.", tools: [["Ashby", "read"], ["Calendar", "read"]],
+        log: [["read", "42 applications"], ["ok", "6 shortlisted"], ["wait", "invites · CTO"]],
+      },
+      {
+        name: "Investors", desc: "Drafts the monthly update and answers investor questions.", kind: "gate", who: "founders", short: "Drafted the September update",
+        trig: "Month end", res: "Update drafted: 3 wins, 2 lowlights, 2 asks. Sending waits for both founders.", tools: [["Stripe & Mercury", "read"], ["Gmail", "draft"]],
+        log: [["read", "4 Monday briefs"], ["draft", "September update"], ["wait", "send · both founders"]],
+      },
+    ],
+  },
+];
+
+export type Role = { id: string; label: string };
+export type Team = { id: string; name: string; people: Role[]; agent: Agent };
+
+const agent = (id: string) => AGENTS.find((a) => a.id === id)!;
+
+/**
+ * Our own teams: the people (by role, not name) and the agent that sits in
+ * each. Every gated area's `who` is one of these role ids. Order is the tab
+ * order in the agents hub.
+ */
+export const ORG: Team[] = [
+  {
+    id: "eng",
+    name: "Engineering",
+    people: [
+      { id: "cto", label: "CTO" },
+      { id: "product", label: "Product lead" },
+      { id: "oncall", label: "On-call engineer" },
+      { id: "reviewer", label: "Reviewing engineer" },
+    ],
+    agent: agent("eng"),
+  },
+  { id: "devrel", name: "Content & DevRel", people: [{ id: "marketing", label: "Marketing lead" }], agent: agent("devrel") },
+  { id: "founders", name: "Co-founder", people: [{ id: "founders", label: "Founders" }], agent: agent("cos") },
+];
+
 export const FOUNDATION = [
   {
     icon: "scope",
@@ -140,22 +339,28 @@ export const FOUNDATION = [
 
 export const TIMELINE = [
   {
-    when: "Day 0 · 30 minutes",
-    title: "The walkthrough",
-    body: "You bring one workflow that hurts. We open a live workspace and show you how a similar blueprint runs with the controls on. You leave knowing whether it's worth doing.",
-    get: "A clear yes or no, and if yes, a fixed price and a start date.",
+    when: "Day 0 · 45 minutes",
+    title: "The call",
+    body: "You bring one workflow that hurts. We open a live workspace and show you how a similar blueprint runs with the controls on. You leave knowing whether it's worth doing, and if it is, what the first agent will do.",
+    get: "A clear yes or no, and if yes, a fixed price for the first agent.",
   },
   {
-    when: "Days 1–14",
-    title: "The build",
-    body: "Our engineers build that one workflow on your systems. Scopes set on day 2, shadow-run from day 10, live on day 14. If you already have a fragile version, it keeps running until the new one has proven itself.",
-    get: "A workflow in production. Fixed scope, price and end date.",
+    when: "Within 24 hours",
+    title: "A live agent in production",
+    body: "Our engineers set it up on your own systems: scopes set, approvals where you want them, every run recorded. It starts doing the work the next day, not next quarter.",
+    get: "A working agent on your systems, with the controls on.",
   },
   {
-    when: "Monthly",
-    title: "Run, then expand",
-    body: "We operate it, absorb model and tool changes, and report the one number you agreed. When it has proven itself, the next blueprint goes to the next team under the same rules.",
-    get: "One agreed number, reported every month, and a shorter build each time.",
+    when: "The first weeks",
+    title: "Feedback",
+    body: "You run it. We watch it with you, tune what it does alone and where it stops for a person, and fix what it gets wrong. Nothing changes without you seeing it.",
+    get: "An agent shaped by how your team actually works.",
+  },
+  {
+    when: "Then",
+    title: "Expand",
+    body: "Once it has proven itself, we widen it on your terms: more team members using it, more flows, more systems, under the same rules your security lead already signed off.",
+    get: "Expansion options scoped to your requirements and how clear they are.",
   },
 ];
 
@@ -173,14 +378,14 @@ export const COMPLIANCE = [
   { name: "EU AI Act", body: "Every automated decision recorded, explainable and reviewable by a person." },
 ];
 
-export const MODELS = ["OpenAI", "Anthropic", "Google", "Meta", "Mistral", "xAI", "DeepSeek", "Qwen", "Open-weight"];
+export const MODELS = ["OpenAI", "Anthropic", "Google", "Meta", "Mistral", "xAI", "DeepSeek", "Qwen", "Open-weight models"];
 
 export const FAQ: [string, string][][] = [
   [
     ["We're just getting started with AI. Is this for us?", "Yes. You don't need an AI strategy, a data team or anything already built. Bring one workflow that eats time every week and we'll tell you on the call whether an agent is the right fix. If a spreadsheet or a simple automation would do the job, we'll say that instead."],
     ["We already have automations. Do you rip them out?", "No. We move one workflow at a time onto quirq and run the old version alongside until the new one has proven itself. Nothing stops while we work."],
     ["What do we need to prepare for the call?", "One workflow that hurts and someone who knows how it works today. No budgets, diagrams or data access."],
-    ["How is a sprint priced?", "Fixed price, scope and end date, agreed before work starts. We only propose one when we can show value of 2–3× its cost."],
+    ["How is it priced?", "A fixed price for the first agent, agreed on the call before work starts. Expansion is scoped from there, based on what you want next and how clearly it's defined. We only propose the first agent when we can show it will be worth it."],
   ],
   [
     ["Where does our data go?", "Nowhere new. Agents run where your work already lives, in your current cloud account or on-prem, and reach your systems only with the permissions you grant. Your data stays where it is today, encrypted in transit and at rest, and you set how long anything is kept."],
@@ -190,9 +395,9 @@ export const FAQ: [string, string][][] = [
 ];
 
 export const AGENDA = [
-  { when: "0–10 min", lead: "You show us.", body: "The workflow, the tools it touches, where it hurts." },
-  { when: "10–25 min", lead: "We show you.", body: "A live workspace running the closest blueprint, controls on." },
-  { when: "25–30 min", lead: "Straight answer.", body: "Worth building or not. If yes: price, scope, start date." },
+  { when: "0–15 min", lead: "You show us.", body: "The workflow, the tools it touches, where it hurts." },
+  { when: "15–35 min", lead: "We show you.", body: "A live workspace running the closest blueprint, controls on." },
+  { when: "35–45 min", lead: "Straight answer.", body: "Worth building or not. If yes: price, scope, and a live agent in production within 24 hours." },
 ];
 
 /** The intake asks what kind of business this is; the placeholder follows the pick. */
@@ -208,8 +413,8 @@ export const PICKS = [
 ];
 
 export const SECTIONS = [
-  { id: "foundation", label: "Foundation" },
-  { id: "cases", label: "In practice" },
+  { id: "agents", label: "Our agents" },
+  { id: "how", label: "Underneath" },
   { id: "engagement", label: "How it runs" },
   { id: "faq", label: "FAQ" },
 ];
