@@ -114,7 +114,7 @@ export const CASES: UseCase[] = [
 /** Hero trust strip: the credibility that used to sit two sections down. */
 // TODO: confirm the certification claims and the team backgrounds before publishing.
 export const TRUST = {
-  runs: { k: "Where it runs", title: "Your cloud or on-prem", body: "Data stays where it is." },
+  runs: { k: "Where it runs", title: "Start on our Secure Cloud", body: "Port to your cloud or on-prem in one click when you're ready." },
   controls: { k: "Controls", items: ["Scoped access", "Approval gates", "Every run recorded"] },
   meets: { k: "Designed to meet", badges: ["SOC 2", "GDPR", "CCPA", "EU AI Act"] },
   trusted: { k: "Trusted by", lead: "Engineers from", names: ["OpenAI", "Google DeepMind", "Google Cloud", "AWS", "NVIDIA"] },
@@ -383,14 +383,13 @@ export const MODELS = ["OpenAI", "Anthropic", "Google", "Meta", "Mistral", "xAI"
 export const FAQ: [string, string][][] = [
   [
     ["We're just getting started with AI. Is this for us?", "Yes. You don't need an AI strategy, a data team or anything already built. Bring one workflow that eats time every week and we'll tell you on the call whether an agent is the right fix. If a spreadsheet or a simple automation would do the job, we'll say that instead."],
+    ["Is MachineSpeed a software product?", "No. MachineSpeed is an engineering service. quirq is the software underneath, and your team gets its controls and reporting as part of the engagement."],
     ["We already have automations. Do you rip them out?", "No. We move one workflow at a time onto quirq and run the old version alongside until the new one has proven itself. Nothing stops while we work."],
-    ["What do we need to prepare for the call?", "One workflow that hurts and someone who knows how it works today. No budgets, diagrams or data access."],
-    ["How is it priced?", "A fixed price for the first agent, agreed on the call before work starts. Expansion is scoped from there, based on what you want next and how clearly it's defined. We only propose the first agent when we can show it will be worth it."],
   ],
   [
-    ["Where does our data go?", "Nowhere new. Agents run where your work already lives, in your current cloud account or on-prem, and reach your systems only with the permissions you grant. Your data stays where it is today, encrypted in transit and at rest, and you set how long anything is kept."],
+    ["What do we need to prepare for the call?", "One workflow that hurts and someone who knows how it works today. No budgets, diagrams or data access."],
+    ["How is it priced?", "A fixed price for the first agent, agreed on the call before work starts. Expansion is scoped from there, based on what you want next and how clearly it's defined. We only propose the first agent when we can show it will be worth it."],
     ["Which AI models do you use?", "Whichever you prefer. If your team already has a model provider or approved tools, we build on those. If you don't have a preference, our engineers recommend what fits each task, based on their experience and what is working for other businesses like yours. Changing your mind later doesn't mean rebuilding the workflow."],
-    ["Is MachineSpeed a software product?", "No. MachineSpeed is an engineering service. quirq is the software underneath, and your team gets its controls and reporting as part of the engagement."],
   ],
 ];
 
@@ -415,6 +414,5 @@ export const PICKS = [
 export const SECTIONS = [
   { id: "agents", label: "Our agents" },
   { id: "how", label: "Underneath" },
-  { id: "engagement", label: "How it runs" },
   { id: "faq", label: "FAQ" },
 ];

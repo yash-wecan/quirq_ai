@@ -13,7 +13,7 @@ import styles from "./machinespeed.module.css";
  * The one moving thing: every few seconds the agent finishes something in the
  * next area. The first render is fixed (nothing lit), so server and client
  * markup match. With reduced motion every area is marked at once and nothing
- * cycles. Everything here is illustrative and says so beneath.
+ * cycles. Everything here is illustrative.
  */
 
 const TICK_MS = 3200;
@@ -181,7 +181,6 @@ export function Agents({ org }: { org: Team[] }) {
         </div>
       </div>
 
-      <p className={styles.agFoot}>Examples are illustrative.</p>
     </div>
   );
 }

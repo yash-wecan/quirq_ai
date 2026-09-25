@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { Agents } from "./agents";
-import { AGENDA, BRIDGE, FAQ, MODELS, ORG, SECTIONS, TIMELINE, TRUST } from "./content";
+import { AGENDA, BRIDGE, FAQ, MODELS, ORG, SECTIONS, TRUST } from "./content";
 import { HeroWord } from "./hero-word";
 import { Intake } from "./intake";
 import { CloudGlyph, GateGlyph, Logo, RecordGlyph, ScopeGlyph, ShieldGlyph } from "./logos";
@@ -27,7 +27,8 @@ import styles from "./machinespeed.module.css";
  *
  * Commented out below on 2026-09-24 feedback, not deleted: the hero control
  * room, Foundation, the use cases ("The same workflow, both ways") and People +
- * Infrastructure. Their copy and components are still in this folder.
+ * Infrastructure, and the Engagement section ("Book a 45-minute call…"). Their
+ * copy and components are still in this folder.
  */
 
 export const metadata: Metadata = {
@@ -209,7 +210,7 @@ export default function MachineSpeed() {
               <div className={styles.band} data-part="models">
                 <span className={styles.k}>Any model</span>
                 <div className={styles.chips}>
-                  {MODELS.map((m) => <span key={m}>{m}</span>)}
+                  {MODELS.map((m) => <span key={m}><Logo name={m} />{m}</span>)}
                 </div>
               </div>
 
@@ -244,7 +245,7 @@ export default function MachineSpeed() {
               <div className={styles.band} data-part="apps">
                 <span className={styles.k}>Your apps</span>
                 <div className={styles.chips}>
-                  {BRIDGE.apps.map((a) => <span key={a}>{a}</span>)}
+                  {BRIDGE.apps.map((a) => <span key={a}>{a !== "Your internal tools" && <Logo name={a} />}{a}</span>)}
                 </div>
               </div>
 
@@ -260,7 +261,7 @@ export default function MachineSpeed() {
           </div>
         </section>
 
-        {/* ============ ENGAGEMENT ============ */}
+        {/* ============ ENGAGEMENT (commented out, 2026-09-24) ============
         <section className={styles.section} id="engagement" aria-labelledby="eng-h">
           <div className={styles.wrap}>
             <div className={`${styles.head} ${styles.lede} ${styles.reveal}`}>
@@ -297,6 +298,7 @@ export default function MachineSpeed() {
             </div>
           </div>
         </section>
+        ============ END ENGAGEMENT ============ */}
 
         {/* ============ PEOPLE + INFRASTRUCTURE (commented out, 2026-09-24) ============
         <section className={`${styles.section} ${styles.tint}`} aria-labelledby="two-h">
@@ -354,7 +356,7 @@ export default function MachineSpeed() {
                   </ul>
                 </div>
                 <div className={styles.chips} aria-label="Models we work with">
-                  {MODELS.map((m) => <span key={m}>{m}</span>)}
+                  {MODELS.map((m) => <span key={m}><Logo name={m} />{m}</span>)}
                 </div>
               </div>
               <div className={styles.modelsLine}>
