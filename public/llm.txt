@@ -44,4 +44,6 @@ at /whitepaper carries the full construction in prose.
 - The whitepaper is readable in full at https://quirq.ai/whitepaper, and the
   typeset PDF at https://quirq.ai/whitepaper/pdf is the version of record.
 - The documentation index is https://quirq.ai/docs.
+- MachineSpeed's 45-minute fit-check call is booked at
+  https://calendly.com/machinespeed-quirq/fit-check
 - Correspondence: hello@quirq.ai

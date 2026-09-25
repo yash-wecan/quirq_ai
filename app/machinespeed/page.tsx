@@ -31,6 +31,9 @@ import styles from "./machinespeed.module.css";
  * copy and components are still in this folder.
  */
 
+/** The 45-minute fit-check call. */
+const BOOKING_URL = "https://calendly.com/machinespeed-quirq/fit-check";
+
 export const metadata: Metadata = {
   // Absolute: this page is not a quirq page, so it does not take the root
   // layout's "· quirq" title template.
@@ -406,9 +409,9 @@ export default function MachineSpeed() {
                 If it is, a live agent is in production on your systems within 24 hours.
               </p>
               <div className={styles.actions}>
-                {/* TODO: replace href with the live booking link */}
-                <a className={`${styles.btn} ${styles.btnPrimary}`} href="#book">
+                <a className={`${styles.btn} ${styles.btnPrimary}`} href={BOOKING_URL} target="_blank" rel="noreferrer">
                   Book a 45-minute call <Arrow />
+                  <span className="sr-only"> (opens Calendly in a new tab)</span>
                 </a>
               </div>
               <ul className={styles.agenda}>
