@@ -14,7 +14,7 @@ import styles from "./machinespeed.module.css";
  * The script adds a row to the "Website" tab and emails the team. The post is
  * fire-and-forget (no-cors), so the confirmation shows either way.
  */
-const LEADS_URL = "APPS_SCRIPT_WEB_APP_URL"; // set after deploying the Apps Script
+const LEADS_URL = "https://script.google.com/macros/s/AKfycbxk13GLnwhXmbNraomlLWEPHHaUHwA9tHmgRIC-Itw33lMjwKSrAEKXxi9Zm86uBL-8/exec";
 export function Intake() {
   const id = useId();
   const [open, setOpen] = useState(false);
