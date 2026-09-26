@@ -9,10 +9,12 @@ import styles from "./machinespeed.module.css";
  * the main action; this is for people who would rather write first. It opens
  * collapsed and expands on request.
  *
- * TODO: this is still the prototype from the source file. Submitting only
- * shows the confirmation; nothing is sent anywhere. Wire it to a real
- * endpoint before this route ships.
+ * Submissions go to the "MachineSpeed leads" Google Sheet (machinespeed@quirq.ai)
+ * through an Apps Script web app; source in machinespeed-int/leads/apps-script.gs.
+ * The script adds a row to the "Website" tab and emails the team. The post is
+ * fire-and-forget (no-cors), so the confirmation shows either way.
  */
+const LEADS_URL = "APPS_SCRIPT_WEB_APP_URL"; // set after deploying the Apps Script
 export function Intake() {
   const id = useId();
   const [open, setOpen] = useState(false);
@@ -27,13 +29,27 @@ export function Intake() {
     "e.g. Three people re-key orders between Shopify and NetSuite every morning, and our Zapier fix keeps breaking";
   const example = PICKS.find((p) => p.label === pick)?.example || DEFAULT_EXAMPLE;
 
-  const submit = (event: FormEvent) => {
+  const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const field = email.current;
     if (!field?.value || !field.checkValidity()) {
       setWarn(true);
       field?.focus();
       return;
+    }
+    const form = new FormData(event.currentTarget);
+    const data = new URLSearchParams({
+      source: "website",
+      email: field.value.trim(),
+      pick: pick ?? "",
+      q1: String(form.get("about") ?? ""),
+      q2: String(form.get("tools") ?? ""),
+      q3: String(form.get("team") ?? ""),
+      company_url: String(form.get("company_url") ?? ""),
+      page: window.location.href,
+    });
+    if (LEADS_URL.startsWith("https:")) {
+      fetch(LEADS_URL, { method: "POST", mode: "no-cors", body: data }).catch(() => {});
     }
     setSent(true);
   };
@@ -91,6 +107,11 @@ export function Intake() {
               <label htmlFor={`${id}-email`}>Work email</label>
               <input ref={email} id={`${id}-email`} name="email" type="email" autoComplete="email" placeholder="you@company.com" />
             </div>
+          </div>
+          {/* Honeypot: hidden from people, filled in by bots; the sheet script drops those. */}
+          <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}>
+            <label htmlFor={`${id}-company-url`}>Leave this empty</label>
+            <input id={`${id}-company-url`} name="company_url" type="text" tabIndex={-1} autoComplete="off" />
           </div>
           <button className={`${styles.btn} ${styles.btnPrimary}`} type="submit">
             Send it ahead of the call <span className={styles.arr} aria-hidden>→</span>
